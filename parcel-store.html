@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Parcel – everyday things for campus life</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #eef0f8;
+      --card: #fff;
+      --ink: #14123a;
+      --muted: #5f5d84;
+      --line: #d9dcf0;
+      --accent: #3a2fe0;
+      --on: #fff;
+      --lime: #d6f25c;
+      --limeink: #14123a;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    @media (prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0e0d24;
+        --card: #1a1940;
+        --ink: #efeeff;
+        --muted: #a3a1cf;
+        --line: #2e2c5e;
+        --accent: #8b84ff;
+        --on: #0e0d24
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0e0d24;
+      --card: #1a1940;
+      --ink: #efeeff;
+      --muted: #a3a1cf;
+      --line: #2e2c5e;
+      --accent: #8b84ff;
+      --on: #0e0d24
+    }
+
+    html {
+      scroll-padding-top: env(safe-area-inset-top, 0px);
+      scroll-behavior: smooth
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif
+    }
+
+    h1,
+    h2,
+    .logo {
+      font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      letter-spacing: -.02em
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      color: inherit
+    }
+
+    button {
+      cursor: pointer
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px
+    }
+
+    .btn {
+      background: var(--accent);
+      color: var(--on);
+      border: 0;
+      border-radius: 10px;
+      padding: .55rem 1rem;
+      font-weight: 700
+    }
+
+    .btn:disabled {
+      opacity: .4;
+      cursor: not-allowed
+    }
+
+    .btn.lime {
+      background: var(--lime);
+      color: var(--limeink)
+    }
+
+    header {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 20;
+      background: var(--bg);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .bar {
+      max-width: 1120px;
+      margin: auto;
+      padding: .7rem 1rem;
+      display: flex;
+      gap: .7rem;
+      align-items: center
+    }
+
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    .search {
+      flex: 1;
+      min-width: 0;
+      padding: .6rem .9rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--card)
+    }
+
+    .icon {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 .7rem;
+      display: grid;
+      place-items: center;
+      font-weight: 700
+    }
+
+    .badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--lime);
+      color: var(--limeink);
+      font-size: .72rem;
+      font-weight: 800;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center
+    }
+
+    .hero {
+      max-width: 1120px;
+      margin: 1.2rem auto;
+      background: var(--accent);
+      color: var(--on);
+      border-radius: 8px 40px 8px 8px;
+      padding: clamp(1.5rem, 5vw, 3.2rem);
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 1.5rem;
+      align-items: center
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      line-height: 1;
+      margin: 0 0 .8rem;
+      font-weight: 800
+    }
+
+    .hero p {
+      margin: 0 0 1.2rem;
+      max-width: 44ch
+    }
+
+    .pile {
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      line-height: 1.1;
+      text-align: center;
+      transform: rotate(-6deg)
+    }
+
+    .stripe {
+      display: inline-block;
+      background: var(--lime);
+      color: var(--limeink);
+      font-weight: 800;
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      transform: rotate(-2deg);
+      margin-bottom: .8rem
+    }
+
+    .tools {
+      max-width: 1120px;
+      margin: 1.5rem auto 0;
+      padding: 0 1rem;
+      display: flex;
+      gap: .6rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .chips {
+      display: flex;
+      gap: .5rem;
+      overflow-x: auto;
+      padding: .2rem 0
+    }
+
+    .chip {
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 8px;
+      padding: .4rem .9rem
+    }
+
+    .chip.on {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink)
+    }
+
+    select {
+      padding: .45rem .7rem;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--card)
+    }
+
+    .grid {
+      max-width: 1120px;
+      margin: 1rem auto 3rem;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+      gap: 1rem
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 6px 22px 6px 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column
+    }
+
+    .card:hover {
+      border-color: var(--accent)
+    }
+
+    .pic {
+      aspect-ratio: 1/.8;
+      display: grid;
+      place-items: center;
+      font-size: 4rem;
+      cursor: pointer;
+      position: relative;
+      border: 0;
+      width: 100%
+    }
+
+    .tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: .78rem;
+      font-weight: 800;
+      background: var(--lime);
+      color: var(--limeink);
+      padding: .1rem .45rem;
+      border-radius: 4px
+    }
+
+    .info {
+      padding: .85rem;
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+      flex: 1
+    }
+
+    .info h3 {
+      margin: 0;
+      font-size: 1rem
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: .86rem
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: .5rem;
+      margin-top: auto;
+      padding-top: .6rem
+    }
+
+    .price b {
+      font-size: 1.1rem
+    }
+
+    .price s {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-left: .4rem
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted)
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 2rem 1rem;
+      border-top: 1px solid var(--line);
+      font-size: .9rem
+    }
+
+    .veil {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 8, 40, .55);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+      z-index: 40
+    }
+
+    .veil.on {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: min(410px, 100%);
+      background: var(--bg);
+      z-index: 50;
+      transform: translateX(100%);
+      transition: transform .3s;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px)
+    }
+
+    .drawer.on {
+      transform: none
+    }
+
+    .dh {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .dh h2 {
+      margin: 0
+    }
+
+    .items {
+      flex: 1;
+      overflow: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: .9rem
+    }
+
+    .item {
+      display: flex;
+      gap: .8rem;
+      align-items: center
+    }
+
+    .thumb {
+      width: 58px;
+      height: 58px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      flex: none
+    }
+
+    .qty {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin-top: .2rem
+    }
+
+    .qty button {
+      background: none;
+      border: 0;
+      width: 32px;
+      height: 30px
+    }
+
+    .qty span {
+      min-width: 24px;
+      text-align: center
+    }
+
+    .x {
+      background: none;
+      border: 0;
+      color: var(--muted);
+      font-size: 1rem
+    }
+
+    .sum {
+      padding: 1rem;
+      border-top: 1px solid var(--line);
+      display: grid;
+      gap: .4rem;
+      background: var(--card)
+    }
+
+    .sum .l {
+      display: flex;
+      justify-content: space-between
+    }
+
+    .sum .t {
+      font-weight: 800;
+      font-size: 1.15rem
+    }
+
+    progress {
+      width: 100%;
+      height: 8px;
+      accent-color: var(--accent)
+    }
+
+    .cp {
+      display: flex;
+      gap: .4rem
+    }
+
+    .cp input {
+      flex: 1;
+      margin: 0
+    }
+
+    dialog {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--ink);
+      padding: 0;
+      width: min(470px, 92vw);
+      max-height: 92vh
+    }
+
+    dialog::backdrop {
+      background: rgba(10, 8, 40, .6)
+    }
+
+    .in {
+      padding: 1.4rem
+    }
+
+    .in h2 {
+      margin: .2rem 0 .4rem
+    }
+
+    label {
+      font-weight: 600;
+      font-size: .9rem
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: .6rem .8rem;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--bg);
+      margin: .2rem 0 .1rem
+    }
+
+    .err {
+      color: #d93a3a;
+      font-size: .82rem;
+      min-height: 1.2rem
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      transform: translate(-50%, 140px);
+      background: var(--ink);
+      color: var(--bg);
+      padding: .6rem 1.1rem;
+      border-radius: 8px;
+      transition: transform .3s;
+      z-index: 60
+    }
+
+    .toast.on {
+      transform: translate(-50%, 0)
+    }
+
+    .pic {
+      overflow: hidden;
+      padding: 0
+    }
+
+    .pic img,
+    .thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block
+    }
+
+    .thumb {
+      position: relative;
+      overflow: hidden
+    }
+
+    .tag {
+      z-index: 1
+    }
+
+    .card .row {
+      flex-wrap: wrap
+    }
+
+    @media(max-width:520px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: .7rem;
+        padding: 0 .7rem
+      }
+
+      .info {
+        padding: .65rem
+      }
+
+      .info h3 {
+        font-size: .92rem
+      }
+
+      .pic {
+        font-size: 3rem
+      }
+
+      .row .btn {
+        padding: .45rem .8rem
+      }
+
+      .bar {
+        flex-wrap: wrap
+      }
+
+      .search {
+        order: 3;
+        flex-basis: 100%
+      }
+    }
+
+    @media(max-width:640px) {
+      .hero {
+        grid-template-columns: 1fr
+      }
+
+      .pile {
+        display: none
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        scroll-behavior: auto !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="bar">
+      <a class="logo" href="#">Parcel</a>
+      <input id="q" class="search" type="search" placeholder="Search headphones, mugs, notebooks"
+        aria-label="Search products">
+      <button class="icon" id="theme" aria-label="Switch theme">Theme</button>
+      <button class="icon" id="cartBtn" aria-label="Open cart">Cart<span class="badge" id="badge"
+          hidden>0</span></button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="stripe">Free delivery over ₹999</span>
+      <h1>Good stuff for hostel rooms and study desks.</h1>
+      <p>Twelve things we would actually buy ourselves. Use code <b>PARCEL10</b> for 10% off your first order.</p>
+      <button class="btn lime" onclick="document.getElementById('shop').scrollIntoView()">Shop the shelf</button>
+    </div>
+    <div class="pile" aria-hidden="true">🎧⌨️<br>🎒☕</div>
+  </section>
+
+  <div class="tools" id="shop">
+    <div class="chips" id="chips"></div>
+    <select id="sort" aria-label="Sort products">
+      <option value="pop">Featured</option>
+      <option value="lo">Price: low to high</option>
+      <option value="hi">Price: high to low</option>
+      <option value="rt">Top rated</option>
+    </select>
+  </div>
+  <main class="grid" id="grid">
+    <article class="card" data-id="1" data-name="Aura Wireless Headphones" data-cat="Audio" data-price="2499"
+      data-old="3999" data-rating="4.6" data-emoji="🎧" data-hue="245" data-img="static/headphone.jpeg"
+      data-desc="40-hour battery, active noise cancelling and soft memory-foam cushions for long library sessions.">
+      <button class="pic" style="background:hsl(245 70% 86%)" data-v="1" aria-label="View Aura Wireless Headphones">
+        <span class="tag">38% off</span>
+        <img src="static/headphone.jpeg" alt="Aura Wireless Headphones" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('🎧')">
+      </button>
+      <div class="info">
+        <h3>Aura Wireless Headphones</h3>
+        <div class="meta">★ 4.6 in Audio</div>
+        <div class="row"><span class="price"><b>₹2,499</b><s>₹3,999</s></span><button class="btn"
+            data-a="1">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="2" data-name="Pocket Bluetooth Speaker" data-cat="Audio" data-price="1299"
+      data-old="1799" data-rating="4.4" data-emoji="🔊" data-hue="190" data-img="static/speaker.jpeg"
+      data-desc="Splash-proof, 12 hours of playtime and loud enough for a room party.">
+      <button class="pic" style="background:hsl(190 70% 86%)" data-v="2" aria-label="View Pocket Bluetooth Speaker">
+        <span class="tag">28% off</span>
+        <img src="static/speaker.jpeg" alt="Pocket Bluetooth Speaker" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('🔊')">
+      </button>
+      <div class="info">
+        <h3>Pocket Bluetooth Speaker</h3>
+        <div class="meta">★ 4.4 in Audio</div>
+        <div class="row"><span class="price"><b>₹1,299</b><s>₹1,799</s></span><button class="btn"
+            data-a="2">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="3" data-name="Pulse Fitness Band" data-cat="Wearables" data-price="1799"
+      data-old="2499" data-rating="4.3" data-emoji="⌚" data-hue="150" data-img="static/fitness-band.jpeg"
+      data-desc="Tracks steps, sleep and heart rate, with a 10-day battery.">
+      <button class="pic" style="background:hsl(150 70% 86%)" data-v="3" aria-label="View Pulse Fitness Band">
+        <span class="tag">28% off</span>
+        <img src="static/fitness-band.jpeg" alt="Pulse Fitness Band" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('⌚')">
+      </button>
+      <div class="info">
+        <h3>Pulse Fitness Band</h3>
+        <div class="meta">★ 4.3 in Wearables</div>
+        <div class="row"><span class="price"><b>₹1,799</b><s>₹2,499</s></span><button class="btn"
+            data-a="3">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="4" data-name="Aviator Sunglasses" data-cat="Wearables" data-price="899" data-old="0"
+      data-rating="4.1" data-emoji="🕶️" data-hue="45" data-img="static/sunglasses.jpeg"
+      data-desc="Lightweight metal frame with UV400 lenses.">
+      <button class="pic" style="background:hsl(45 70% 86%)" data-v="4" aria-label="View Aviator Sunglasses">
+
+        <img src="static/sunglasses.jpeg" alt="Aviator Sunglasses" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('🕶️')">
+      </button>
+      <div class="info">
+        <h3>Aviator Sunglasses</h3>
+        <div class="meta">★ 4.1 in Wearables</div>
+        <div class="row"><span class="price"><b>₹899</b></span><button class="btn" data-a="4">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="5" data-name="Glow Desk Lamp" data-cat="Home" data-price="749" data-old="999"
+      data-rating="4.5" data-emoji="💡" data-hue="55" data-img="static/desk-lamp.jpeg"
+      data-desc="Three colour temperatures and a flexible neck. Easy on the eyes at 2 a.m.">
+      <button class="pic" style="background:hsl(55 70% 86%)" data-v="5" aria-label="View Glow Desk Lamp">
+        <span class="tag">25% off</span>
+        <img src="static/desk-lamp.jpeg" alt="Glow Desk Lamp" width="600" height="480" loading="lazy" decoding="async"
+          onerror="this.replaceWith('💡')">
+      </button>
+      <div class="info">
+        <h3>Glow Desk Lamp</h3>
+        <div class="meta">★ 4.5 in Home</div>
+        <div class="row"><span class="price"><b>₹749</b><s>₹999</s></span><button class="btn" data-a="5">Add</button>
+        </div>
+      </div>
+    </article>
+    <article class="card" data-id="6" data-name="Ceramic Brew Mug" data-cat="Home" data-price="349" data-old="0"
+      data-rating="4.7" data-emoji="☕" data-hue="20" data-img="static/mug.jpeg"
+      data-desc="350 ml hand-glazed mug that keeps chai warm a little longer.">
+      <button class="pic" style="background:hsl(20 70% 86%)" data-v="6" aria-label="View Ceramic Brew Mug">
+
+        <img src="static/mug.jpeg" alt="Ceramic Brew Mug" width="600" height="480" loading="lazy" decoding="async"
+          onerror="this.replaceWith('☕')">
+      </button>
+      <div class="info">
+        <h3>Ceramic Brew Mug</h3>
+        <div class="meta">★ 4.7 in Home</div>
+        <div class="row"><span class="price"><b>₹349</b></span><button class="btn" data-a="6">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="7" data-name="Mini Plant Pot Set" data-cat="Home" data-price="599" data-old="0"
+      data-rating="4.5" data-emoji="🪴" data-hue="130" data-img="static/plant-pots.jpeg"
+      data-desc="Three self-watering pots for a greener desk.">
+      <button class="pic" style="background:hsl(130 70% 86%)" data-v="7" aria-label="View Mini Plant Pot Set">
+
+        <img src="static/plant-pots.jpeg" alt="Mini Plant Pot Set" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('🪴')">
+      </button>
+      <div class="info">
+        <h3>Mini Plant Pot Set</h3>
+        <div class="meta">★ 4.5 in Home</div>
+        <div class="row"><span class="price"><b>₹599</b></span><button class="btn" data-a="7">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="8" data-name="Clicky Mechanical Keyboard" data-cat="Study" data-price="3299"
+      data-old="4199" data-rating="4.8" data-emoji="⌨️" data-hue="285" data-img="static/keyboard.jpeg"
+      data-desc="Hot-swappable switches, compact 75% layout and USB-C.">
+      <button class="pic" style="background:hsl(285 70% 86%)" data-v="8" aria-label="View Clicky Mechanical Keyboard">
+        <span class="tag">21% off</span>
+        <img src="static/keyboard.jpeg" alt="Clicky Mechanical Keyboard" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('⌨️')">
+      </button>
+      <div class="info">
+        <h3>Clicky Mechanical Keyboard</h3>
+        <div class="meta">★ 4.8 in Study</div>
+        <div class="row"><span class="price"><b>₹3,299</b><s>₹4,199</s></span><button class="btn"
+            data-a="8">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="9" data-name="Ergo Wireless Mouse" data-cat="Study" data-price="899" data-old="0"
+      data-rating="4.2" data-emoji="🖱️" data-hue="210" data-img="static/mouse.jpeg"
+      data-desc="Silent clicks and a shape that keeps your wrist neutral.">
+      <button class="pic" style="background:hsl(210 70% 86%)" data-v="9" aria-label="View Ergo Wireless Mouse">
+
+        <img src="static/mouse.jpeg" alt="Ergo Wireless Mouse" width="600" height="480" loading="lazy" decoding="async"
+          onerror="this.replaceWith('🖱️')">
+      </button>
+      <div class="info">
+        <h3>Ergo Wireless Mouse</h3>
+        <div class="meta">★ 4.2 in Study</div>
+        <div class="row"><span class="price"><b>₹899</b></span><button class="btn" data-a="9">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="10" data-name="Campus Backpack" data-cat="Study" data-price="1499" data-old="1999"
+      data-rating="4.5" data-emoji="🎒" data-hue="100" data-img="static/backpack.jpeg"
+      data-desc="Fits a 15.6 inch laptop, with a hidden pocket and water-resistant fabric.">
+      <button class="pic" style="background:hsl(100 70% 86%)" data-v="10" aria-label="View Campus Backpack">
+        <span class="tag">25% off</span>
+        <img src="static/backpack.jpeg" alt="Campus Backpack" width="600" height="480" loading="lazy" decoding="async"
+          onerror="this.replaceWith('🎒')">
+      </button>
+      <div class="info">
+        <h3>Campus Backpack</h3>
+        <div class="meta">★ 4.5 in Study</div>
+        <div class="row"><span class="price"><b>₹1,499</b><s>₹1,999</s></span><button class="btn"
+            data-a="10">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="11" data-name="Dot-Grid Notebook Pack" data-cat="Study" data-price="299" data-old="0"
+      data-rating="4.6" data-emoji="📓" data-hue="320" data-img="static/notebooks.jpeg"
+      data-desc="Set of three A5 notebooks with thick, ink-friendly paper.">
+      <button class="pic" style="background:hsl(320 70% 86%)" data-v="11" aria-label="View Dot-Grid Notebook Pack">
+
+        <img src="static/notebooks.jpeg" alt="Dot-Grid Notebook Pack" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('📓')">
+      </button>
+      <div class="info">
+        <h3>Dot-Grid Notebook Pack</h3>
+        <div class="meta">★ 4.6 in Study</div>
+        <div class="row"><span class="price"><b>₹299</b></span><button class="btn" data-a="11">Add</button></div>
+      </div>
+    </article>
+    <article class="card" data-id="12" data-name="Steel Water Bottle" data-cat="Home" data-price="549" data-old="0"
+      data-rating="4.0" data-emoji="🧴" data-hue="170" data-img="static/water-bottle.jpeg"
+      data-desc="750 ml insulated bottle, cold for 24 hours.">
+      <button class="pic" style="background:hsl(170 70% 86%)" data-v="12" aria-label="View Steel Water Bottle">
+
+        <img src="static/water-bottle.jpeg" alt="Steel Water Bottle" width="600" height="480" loading="lazy"
+          decoding="async" onerror="this.replaceWith('🧴')">
+      </button>
+      <div class="info">
+        <h3>Steel Water Bottle</h3>
+        <div class="meta">★ 4.0 in Home</div>
+        <div class="row"><span class="price"><b>₹549</b></span><button class="btn" data-a="12">Add</button></div>
+      </div>
+    </article>
+  </main>
+  <p class="empty" id="empty" hidden>No products match that search. Try a different word or clear the filter.</p>
+  <footer>Parcel is a demo store built with HTML, CSS and JavaScript. No real payments are taken.</footer>
+
+  <div class="veil" id="veil"></div>
+  <aside class="drawer" id="drawer" aria-label="Shopping cart">
+    <div class="dh">
+      <h2>Your cart</h2><button class="x" id="closeCart" aria-label="Close cart">✕</button>
+    </div>
+    <div class="items" id="items"></div>
+    <div class="sum">
+      <div class="meta" id="ship"></div><progress id="prog" max="999" value="0"></progress>
+      <div class="cp"><input id="cp" placeholder="Coupon code" aria-label="Coupon code"><button class="btn"
+          id="apply">Apply</button></div>
+      <div id="sum"></div>
+      <button class="btn" id="checkout" disabled>Go to checkout</button>
+    </div>
+  </aside>
+
+  <dialog id="qv">
+    <div class="in" id="qvb"></div>
+  </dialog>
+  <dialog id="co">
+    <div class="in">
+      <form id="form" novalidate>
+        <h2>Checkout</h2>
+        <p class="meta" id="pay"></p>
+        <label for="name">Full name</label><input id="name" name="name" autocomplete="name">
+        <div class="err"></div>
+        <label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email">
+        <div class="err"></div>
+        <label for="phone">Mobile number</label><input id="phone" name="phone" inputmode="numeric" maxlength="10"
+          autocomplete="tel">
+        <div class="err"></div>
+        <label for="addr">Delivery address</label><textarea id="addr" name="addr" rows="3"
+          autocomplete="street-address"></textarea>
+        <div class="err"></div>
+        <div class="row"><button type="button" class="btn"
+            style="background:var(--bg);color:var(--ink);border:1px solid var(--line)"
+            onclick="document.getElementById('co').close()">Back to cart</button><button class="btn" type="submit">Place
+            order</button></div>
+      </form>
+      <div id="done" hidden>
+        <h2>Order placed</h2>
+        <p>Thank you, <b id="who"></b>. Your order <b id="oid"></b> is confirmed and will reach you in 3 to 5 days.</p>
+        <button class="btn" onclick="document.getElementById('co').close()">Keep shopping</button>
+      </div>
+    </div>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const $ = s => document.querySelector(s), money = n => '₹' + n.toLocaleString('en-IN');
+    const P = [...document.querySelectorAll('#grid .card')].map(el => ({ el, id: +el.dataset.id, n: el.dataset.name, c: el.dataset.cat, p: +el.dataset.price, o: +el.dataset.old, e: el.dataset.emoji, i: el.dataset.img, r: +el.dataset.rating, h: +el.dataset.hue, d: el.dataset.desc }));
+    const cats = ['All', ...new Set(P.map(x => x.c))];
+    let cart = {}, cat = 'All', q = '', sort = 'pop', coupon = false;
+    try { cart = JSON.parse(localStorage.getItem('parcel-cart') || '{}') } catch (e) { cart = {} }
+    const save = () => { try { localStorage.setItem('parcel-cart', JSON.stringify(cart)) } catch (e) { } };
+    const img = x => `<img src="${x.i}" alt="${x.n}" loading="lazy" onerror="this.replaceWith('${x.e}')">`;
+    const bg = h => `background:hsl(${h} 70% 86%)`;
+    const find = id => P.find(x => x.id == id);
+    const priceHTML = x => `<span class="price"><b>${money(x.p)}</b>${x.o ? `<s>${money(x.o)}</s>` : ''}</span>`;
+    let tt; function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 1800) }
+
+    function chips() { $('#chips').innerHTML = cats.map(c => `<button class="chip ${c == cat ? 'on' : ''}" data-c="${c}">${c}</button>`).join('') }
+    function grid() {
+      let a = P.filter(x => (cat == 'All' || x.c == cat) && (x.n + ' ' + x.c).toLowerCase().includes(q));
+      if (sort == 'lo') a.sort((x, y) => x.p - y.p); if (sort == 'hi') a.sort((x, y) => y.p - x.p); if (sort == 'rt') a.sort((x, y) => y.r - x.r);
+      $('#grid').replaceChildren(...a.map(x => x.el));
+      $('#empty').hidden = a.length > 0;
+    }
+    function totals() { const s = Object.entries(cart).reduce((t, [id, n]) => t + find(id).p * n, 0), d = coupon ? Math.round(s * .1) : 0, sh = (!s || s - d >= 999) ? 0 : 49; return { s, d, sh, t: s - d + sh } }
+    function paint() {
+      const n = Object.values(cart).reduce((a, b) => a + b, 0), T = totals();
+      $('#badge').textContent = n; $('#badge').hidden = !n; $('#checkout').disabled = !n;
+      $('#items').innerHTML = n ? Object.entries(cart).map(([id, q]) => { const x = find(id); return `<div class="item"><div class="thumb" style="${bg(x.h)}">${img(x)}</div><div style="flex:1"><b>${x.n}</b><div class="meta">${money(x.p)}</div><div class="qty"><button data-m="${id}" aria-label="Decrease">−</button><span>${q}</span><button data-p="${id}" aria-label="Increase">+</button></div></div><button class="x" data-r="${id}" aria-label="Remove ${x.n}">✕</button></div>` }).join('') : '<p class="meta">Your cart is empty. Add something from the shelf.</p>';
+      const left = 999 - (T.s - T.d);
+      $('#ship').innerHTML = !T.s ? 'Free delivery on orders over ₹999' : left > 0 ? `Add <b>${money(left)}</b> more for free delivery` : 'You have free delivery';
+      $('#prog').value = Math.min(999, T.s - T.d);
+      $('#sum').innerHTML = `<div class="l"><span>Subtotal</span><span>${money(T.s)}</span></div>${T.d ? `<div class="l"><span>Coupon PARCEL10</span><span>−${money(T.d)}</span></div>` : ''}<div class="l"><span>Delivery</span><span>${T.sh ? money(T.sh) : 'Free'}</span></div><div class="l t"><span>Total</span><span>${money(T.t)}</span></div>`;
+    }
+    function add(id, d = 1) { cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delete cart[id]; save(); paint() }
+    function openCart(o) { $('#drawer').classList.toggle('on', o); $('#veil').classList.toggle('on', o) }
+    function quick(id) { const x = find(id); $('#qvb').innerHTML = `<div class="pic" style="${bg(x.h)};border-radius:8px;font-size:5rem;cursor:default">${img(x)}</div><h2>${x.n}</h2><div class="meta">${'★'.repeat(Math.round(x.r))} ${x.r} rating in ${x.c}</div><p>${x.d}</p><div class="row">${priceHTML(x)}<button class="btn" data-a="${x.id}" onclick="this.closest('dialog').close()">Add to cart</button></div>`; $('#qv').showModal() }
+
+    document.addEventListener('click', e => {
+      const t = e.target.closest('[data-c],[data-a],[data-v],[data-m],[data-p],[data-r]'); if (!t) return; const d = t.dataset;
+      if (d.c) { cat = d.c; chips(); grid() }
+      else if (d.a) { add(+d.a); toast('Added to cart') }
+      else if (d.v) quick(+d.v);
+      else if (d.m) add(+d.m, -1);
+      else if (d.p) add(+d.p);
+      else if (d.r) { delete cart[d.r]; save(); paint() }
+    });
+    document.querySelectorAll('dialog').forEach(dl => dl.addEventListener('click', e => { if (e.target === dl) dl.close() }));
+    $('#q').oninput = e => { q = e.target.value.trim().toLowerCase(); grid() };
+    $('#sort').onchange = e => { sort = e.target.value; grid() };
+    $('#cartBtn').onclick = () => openCart(true); $('#closeCart').onclick = $('#veil').onclick = () => openCart(false);
+    document.addEventListener('keydown', e => { if (e.key == 'Escape') openCart(false) });
+    $('#apply').onclick = () => { coupon = $('#cp').value.trim().toUpperCase() == 'PARCEL10'; toast(coupon ? 'Coupon applied: 10% off' : 'That code is not valid'); paint() };
+    $('#theme').onclick = () => { const r = document.documentElement, dark = (r.dataset.theme || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light')) == 'dark'; r.dataset.theme = dark ? 'light' : 'dark' };
+    $('#checkout').onclick = () => { $('#pay').textContent = 'Amount to pay: ' + money(totals().t) + ' (demo, no real payment)'; $('#form').hidden = false; $('#done').hidden = true; openCart(false); $('#co').showModal() };
+    $('#form').onsubmit = e => {
+      e.preventDefault(); const f = e.target; let ok = true;
+      const chk = (n, fn, m) => { const good = fn(f[n].value.trim()); f[n].nextElementSibling.textContent = good ? '' : m; if (!good) ok = false };
+      chk('name', s => s.length > 1, 'Enter your full name.');
+      chk('email', s => /^\S+@\S+\.\S+$/.test(s), 'Enter a valid email, like name@example.com.');
+      chk('phone', s => /^[6-9]\d{9}$/.test(s), 'Enter a 10-digit mobile number.');
+      chk('addr', s => s.length > 9, 'Enter your full delivery address.');
+      if (!ok) return;
+      $('#who').textContent = f.name.value.trim(); $('#oid').textContent = '#PC' + Date.now().toString().slice(-6);
+      cart = {}; coupon = false; save(); paint(); f.reset(); $('#form').hidden = true; $('#done').hidden = false;
+    };
+    chips(); grid(); paint();
+  </script>
+</body>
+
+</html>
